@@ -1,0 +1,8 @@
+2026-04-21 03:00:40,636 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
+2026-04-21 03:02:14,155 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
+2026-04-21 03:05:58,069 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
+2026-04-21 18:18:21,087 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator

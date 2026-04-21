@@ -10,6 +10,7 @@ class User(Base):
     name = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False, index=True)
     password = Column(String, nullable=False)
+    role = Column(String, default="user")  # ✅ make sure this is here
     organization_id = Column(Integer, ForeignKey("organizations.id"), nullable=True)
     created_at = Column(DateTime, default=datetime.now)
 
