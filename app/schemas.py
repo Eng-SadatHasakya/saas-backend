@@ -55,3 +55,29 @@ class SubscriptionResponse(BaseModel):
 
 class SubscriptionUpdate(BaseModel):
     plan: str # free, pro, enterprise
+
+# Invitation schemas
+class InviteCreate(BaseModel):
+    email: str
+    role: str = "User" # default role is user
+
+class InviteResponse(BaseModel):
+    id: int
+    email: str
+    organization_id: int
+    token: str
+    role: str 
+    accepted: bool
+    expires_at: datetime
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class AcceptInvite(BaseModel):
+    token: str
+    name: str
+    password: str
+        
+
+

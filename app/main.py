@@ -2,7 +2,7 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
-from app.routes import auth, users, organizations, subscriptions
+from app.routes import auth, users, organizations, subscriptions, invitations
 
 logging.basicConfig(
     level=logging.INFO,
@@ -38,6 +38,7 @@ app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(organizations.router)
 app.include_router(subscriptions.router)
+app.include_router(invitations.router)
 
 @app.get("/", tags=["Health"])
 def root():

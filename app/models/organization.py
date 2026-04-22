@@ -1,4 +1,4 @@
-from sqlalchemy import Column, column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 from app.database import Base
 from datetime import datetime
@@ -12,3 +12,4 @@ class Organization(Base):
 
     users = relationship("User", back_populates="organization")
     subscription = relationship("Subscription", back_populates="organization", uselist=False)
+    invitations = relationship("Invitation", back_populates="organization") 

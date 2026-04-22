@@ -12,3 +12,5 @@ To install, run: pip install email-validator
 To install, run: pip install email-validator
 2026-04-22 21:43:14,125 - WARNING - email-validator not installed, email fields will be treated as str.
 To install, run: pip install email-validator
+2026-04-22 23:33:20,791 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
