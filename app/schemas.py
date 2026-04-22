@@ -78,6 +78,20 @@ class AcceptInvite(BaseModel):
     token: str
     name: str
     password: str
-        
 
+# API Key schemas
+class APIKeyCreate(BaseModel):
+    name: str
+    expires_in_days: Optional[int] = None  # None means never expires
 
+class APIKeyResponse(BaseModel):
+    id: int
+    name: str
+    key: str
+    organization_id: int
+    is_active: bool
+    created_at: datetime
+    expires_at: Optional[datetime]
+
+    class Config:
+        from_attributes = True

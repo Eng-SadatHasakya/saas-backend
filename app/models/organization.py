@@ -13,3 +13,4 @@ class Organization(Base):
     users = relationship("User", back_populates="organization")
     subscription = relationship("Subscription", back_populates="organization", uselist=False)
     invitations = relationship("Invitation", back_populates="organization") 
+    api_keys = relationship("APIKey", back_populates="organization")  # ✅ plural
