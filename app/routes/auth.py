@@ -43,6 +43,11 @@ def register(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    # ✅ Auto-create free subscription for new org
+    from app.routes.subscriptions import create_default_subscription
+    create_default_subscription(db, org.id)
+
     return new_user
 
 @router.post("/login")

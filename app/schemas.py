@@ -40,3 +40,18 @@ class UserResponse(BaseModel):
 # Token schemas
 class RefreshTokenRequest(BaseModel):
     refresh_token: str
+
+# Subscription schemas
+class SubscriptionResponse(BaseModel):
+    id: int
+    organization_id: int
+    plan: str
+    status: str
+    expires_at: Optional[datetime]
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+class SubscriptionUpdate(BaseModel):
+    plan: str # free, pro, enterprise
