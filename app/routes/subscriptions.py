@@ -5,6 +5,7 @@ from app.models.subscription import Subscription
 from app import schemas
 from app.services.auth import get_current_user, require_admin
 from datetime import datetime, timedelta
+from app.services.event_service import emit_subscription_updated
 
 router = APIRouter(prefix="/subscriptions", tags=["Subscriptions"])
 
@@ -42,7 +43,7 @@ def get_my_subscription(
 
 # 🔒 Admin only — upgrade/downgrade plan
 @router.put("/me", response_model=schemas.SubscriptionResponse)
-def update_subscription(
+async def update_subscription(
     data: schemas.SubscriptionUpdate,
     db: Session = Depends(get_db),
     current_user: dict = Depends(require_admin)
@@ -67,4 +68,6 @@ def update_subscription(
 
     db.commit()
     db.refresh(sub)
+
+    await emit_subscription_updated(current_user["org_id"], data.plan)
     return sub

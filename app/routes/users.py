@@ -1,3 +1,4 @@
+from app.services.event_service import emit_user_created, emit_user_deleted
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database import get_db
@@ -47,7 +48,7 @@ def get_user(
 
 # 🔒 Add a new member to MY organization
 @router.post("/", response_model=schemas.UserResponse)
-def add_member(
+async def add_member(
     user: schemas.UserCreate,
     db: Session = Depends(get_db),
     current_user: dict = Depends(require_admin)
@@ -61,19 +62,41 @@ def add_member(
         email=user.email,
         password=hash_password(user.password),
         role="user",
-        organization_id=current_user["org_id"]  # ✅ Auto-assign to admin's org
+        organization_id=current_user["org_id"]
     )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    await emit_user_created(current_user["org_id"], {
+        "id": new_user.id,
+        "name": new_user.name,
+        "email": new_user.email,
+        "role": new_user.role
+    })
+
+    return new_user
+
+    # ✅ Emit real-time event
+    import asyncio
+    asyncio.create_task(emit_user_created(current_user["org_id"], {
+        "id": new_user.id,
+        "name": new_user.name,
+        "email": new_user.email,
+        "role": new_user.role
+    }))
+
     return new_user
 
 # 🔒 Delete a user from MY organization
 @router.delete("/{user_id}")
-def delete_user(
+async def delete_user(
     user_id: int,
     db: Session = Depends(get_db),
     current_user: dict = Depends(require_admin)
 ):
-    # ✅ Tenant isolation — cannot delete users from other orgs
-    return delete_user_in_org(db, user_id, current_user["org_id"])
+    user = get_user_in_org(db, user_id, current_user["org_id"])
+    db.delete(user)
+    db.commit()
+    await emit_user_deleted(current_user["org_id"], user_id)
+    return {"message": "Deleted"}
