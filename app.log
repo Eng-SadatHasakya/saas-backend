@@ -24,3 +24,15 @@ To install, run: pip install email-validator
 To install, run: pip install email-validator
 2026-04-23 01:25:17,662 - WARNING - email-validator not installed, email fields will be treated as str.
 To install, run: pip install email-validator
+2026-04-24 13:24:06,414 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
+2026-04-24 13:32:22,401 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
+2026-04-24 13:34:15,523 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-24 13:34:15,524 - INFO - Retrying request to /chat/completions in 0.492490 seconds
+2026-04-24 13:34:16,445 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-24 13:34:16,447 - INFO - Retrying request to /chat/completions in 0.831065 seconds
+2026-04-24 13:34:18,491 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2026-04-24 13:57:59,710 - WARNING - email-validator not installed, email fields will be treated as str.
+To install, run: pip install email-validator
+2026-04-24 13:59:44,905 - INFO - HTTP Request: POST https://api.groq.com/openai/v1/chat/completions "HTTP/1.1 400 Bad Request"
