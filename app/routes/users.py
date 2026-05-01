@@ -73,7 +73,7 @@ async def add_member(
         "name": new_user.name,
         "email": new_user.email,
         "role": new_user.role
-    })
+    }, db)
 
     return new_user
 
@@ -98,5 +98,5 @@ async def delete_user(
     user = get_user_in_org(db, user_id, current_user["org_id"])
     db.delete(user)
     db.commit()
-    await emit_user_deleted(current_user["org_id"], user_id)
+    await emit_user_deleted(current_user["org_id"], user_id, db)
     return {"message": "Deleted"}
