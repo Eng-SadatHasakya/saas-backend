@@ -6,7 +6,8 @@ class EventType(str, Enum):
     INVITE_SENT = "INVITE_SENT"
     INVITE_ACCEPTED = "INVITE_ACCEPTED"
     SUBSCRIPTION_UPDATED = "SUBSCRIPTION_UPDATED"
-    AI_RESPONSE_READY = "AI_RESPONSE_READY"
+    AI_RESPONSE_READY = "AI_RESPONSE_READY" # AI event
+    AI_THINKING = "AI_THINKING"             # typing indicator
     NOTIFICATION = "NOTIFICATION"
 
 def create_event(event_type: EventType, data: dict, org_id: int) -> dict:
