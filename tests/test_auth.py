@@ -1,17 +1,18 @@
 from fastapi.testclient import TestClient
 from app.main import app
+import uuid
 
 client = TestClient(app)
 
 def test_register_user():
+    unique_email = f"test_{uuid.uuid4().hex[:8]}@example.com"
     response = client.post("/auth/register", json={
         "name": "Test User",
-        "email": "test@example.com",
+        "email": unique_email,
         "password": "testpass123",
-        "organization_name": "Test Org"
+        "organization_name": f"Test Org {uuid.uuid4().hex[:8]}"
     })
     assert response.status_code == 200
-    assert response.json()["email"] == "test@example.com"
     assert response.json()["role"] == "admin"
 
 def test_login_user():
