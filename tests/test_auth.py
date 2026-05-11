@@ -4,21 +4,25 @@ import uuid
 
 client = TestClient(app)
 
+# Shared test credentials
+TEST_EMAIL = f"test_{uuid.uuid4().hex[:8]}@example.com"
+TEST_ORG = f"Test Org {uuid.uuid4().hex[:8]}"
+TEST_PASSWORD = "testpass123"
+
 def test_register_user():
-    unique_email = f"test_{uuid.uuid4().hex[:8]}@example.com"
     response = client.post("/auth/register", json={
         "name": "Test User",
-        "email": unique_email,
-        "password": "testpass123",
-        "organization_name": f"Test Org {uuid.uuid4().hex[:8]}"
+        "email": TEST_EMAIL,
+        "password": TEST_PASSWORD,
+        "organization_name": TEST_ORG
     })
     assert response.status_code == 200
     assert response.json()["role"] == "admin"
 
 def test_login_user():
     response = client.post("/auth/login", data={
-        "username": "test@example.com",
-        "password": "testpass123"
+        "username": TEST_EMAIL,
+        "password": TEST_PASSWORD
     })
     assert response.status_code == 200
     assert "access_token" in response.json()
