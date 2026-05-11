@@ -15,6 +15,14 @@ class Settings:
     GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
     AI_MODEL: str = "llama-3.3-70b-versatile"
     AI_MAX_TOKENS: int = 500
+    #Stripe
+    STRIPE_SECRET_KEY: str = os.getenv("STRIPE_SECRET_KEY", "")
+    STRIPE_PUBLISHABLE_KEY: str = os.getenv("STRIPE_PUBLISHABLE_KEY", "")
+    STRIPE_WEBHOOK_SECRET: str = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+
+    # Stripe Price IDs (we'll create these in Stripe dashboard)
+    STRIPE_PRO_PRICE_ID: str = os.getenv("STRIPE_PRO_PRICE_ID", "")
+    STRIPE_ENTERPRISE_PRICE_ID: str = os.getenv("STRIPE_ENTERPRISE_PRICE_ID", "")
     APP_NAME: str = "SaaS Platform"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
