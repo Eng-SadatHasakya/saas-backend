@@ -53,8 +53,8 @@ jobs:
           echo "STRIPE_PRO_PRICE_ID=test_key" >> .env
           echo "STRIPE_ENTERPRISE_PRICE_ID=test_key" >> .env
 
-      - name: Run migrations
-        run: alembic upgrade head
+      - name: Create tables
+        run: python -c "from app.core.database import engine, Base; from app import models; Base.metadata.create_all(bind=engine)"
 
       - name: Run tests
         run: pytest tests/ -v
