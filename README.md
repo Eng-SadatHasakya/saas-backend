@@ -1,165 +1,143 @@
-# 🚀 SaaS Backend API
+# 🚀 AI-Powered Multi-Tenant SaaS Platform
 
-A production-grade multi-tenant SaaS backend built with FastAPI, PostgreSQL, and Docker.
+A production-grade, real-time, AI-enabled SaaS backend built with FastAPI, PostgreSQL, Redis, and WebSockets.
 
----
+![CI Pipeline](https://github.com/Eng-SadatHasakya/saas-backend/actions/workflows/ci.yml/badge.svg)
 
-## 🔷 Overview
+## 🏗️ Architecture
+┌─────────────────────────────────────────────┐
+│                API Gateway :8080             │
+└──────────────────┬──────────────────────────┘
+│
+┌──────────────┼──────────────┐
+│              │              │
+┌───▼───┐    ┌────▼────┐   ┌────▼────┐
+│ Auth  │    │   AI    │   │Notif.   │
+│ :8001 │    │  :8003  │   │  :8002  │
+└───────┘    └─────────┘   └─────────┘
+│
+┌──────────────────▼──────────────────────────┐
+│              Main API :8000                  │
+│  FastAPI + SQLAlchemy + Redis + WebSocket    │
+└──────────────────┬──────────────────────────┘
+│
+┌─────────▼─────────┐
+│    PostgreSQL      │
+│    Redis Cache     │
+└───────────────────┘
 
-This backend powers a scalable SaaS platform with:
+## ✨ Features
 
-* Multi-tenant architecture (organization-based isolation)
-* JWT authentication with refresh tokens
-* Role-based access control (RBAC)
-* Subscription management (Free, Pro, Enterprise)
-* Token-based invite system
-* API key authentication
-* Full audit logging
-* Database migrations using Alembic
+- 🔐 **JWT Authentication** — Access + refresh tokens with revocation
+- 👥 **Multi-Tenancy** — Complete organization data isolation
+- 🤖 **AI Assistant** — Groq LLaMA powered, tenant-aware
+- ⚡ **Real-Time** — WebSocket with live notifications
+- 💳 **Payments** — Stripe checkout and subscription management
+- 📧 **Invite System** — Token-based team onboarding
+- 🔑 **API Keys** — sk_ prefixed with expiry management
+- 🚀 **Microservices** — Auth, AI, Notification services
+- 📊 **Monitoring** — Redis cache stats, DB optimization
+- 🔄 **CI/CD** — GitHub Actions with automated testing
 
----
+## 🛠️ Tech Stack
 
-## 🧱 Tech Stack
+| Layer | Technology |
+|-------|-----------|
+| Framework | FastAPI (Python 3.13) |
+| Database | PostgreSQL 18 |
+| Cache | Redis |
+| ORM | SQLAlchemy + Alembic |
+| Auth | JWT + python-jose |
+| AI | Groq LLaMA 3.3 70B |
+| Payments | Stripe |
+| Real-Time | WebSockets |
+| Container | Docker + Docker Compose |
+| CI/CD | GitHub Actions |
 
-* **Framework:** FastAPI
-* **Database:** PostgreSQL
-* **ORM:** SQLAlchemy
-* **Authentication:** JWT (access + refresh tokens)
-* **Migrations:** Alembic
-* **Containerization:** Docker
+## 📡 API Endpoints
 
----
-
-## 📂 Project Structure
-
-app/
-├── models/
-├── routers/
-├── services/
-├── auth/
-├── core/
-├── database.py
-├── main.py
-
----
-
-## 🔐 Authentication
-
-* JWT-based authentication
-* Access tokens (short-lived)
-* Refresh tokens (long-lived)
-* Role-based access per organization
-
----
-
-## 🏢 Multi-Tenancy
-
-* Each user belongs to an organization
-* Strict tenant isolation enforced at query level
-* No cross-tenant data access
-
----
-
-## 📦 Features
+### Auth
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| POST | /auth/register | Public |
+| POST | /auth/login | Public |
+| POST | /auth/refresh | Authenticated |
+| POST | /auth/logout | Authenticated |
 
 ### Users
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | /users/ | Admin |
+| GET | /users/me | Authenticated |
+| POST | /users/ | Admin |
+| DELETE | /users/{id} | Admin |
 
-* Create, update, delete users
-* Role assignment (admin, member)
+### AI
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| POST | /ai/query | Authenticated |
 
-### Organizations
+### Billing
+| Method | Endpoint | Access |
+|--------|----------|--------|
+| GET | /billing/info | Authenticated |
+| POST | /billing/checkout/{plan} | Admin |
 
-* Multi-tenant support
-* Organization-level ownership
+## 🚀 Quick Start
 
-### Invitations
+### Local Development
+```bash
+# Clone
+git clone https://github.com/Eng-SadatHasakya/saas-backend.git
+cd saas-backend
 
-* Token-based invite system
-* Secure onboarding flow
+# Setup
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
 
-### Subscriptions
+# Configure
+cp .env.example .env
+# Edit .env with your values
 
-* Free / Pro / Enterprise plans
-* Subscription tracking per organization
+# Database
+alembic upgrade head
 
-### API Keys
+# Run
+uvicorn app.main:app --reload
+```
 
-* `sk_` prefixed keys
-* Alternative authentication mechanism
-
-### Audit Logs
-
-* Tracks critical system actions
-* Security and compliance ready
-
----
-
-## ⚙️ Environment Variables
-
-Create a `.env` file:
-
-DATABASE_URL=postgresql://user:password@localhost/dbname
-SECRET_KEY=your_secret_key
-ALGORITHM=HS256
-ACCESS_TOKEN_EXPIRE_MINUTES=60
-REFRESH_TOKEN_EXPIRE_DAYS=7
-
----
-
-## 🐳 Running with Docker
-
+### Docker
 ```bash
 docker-compose up --build
 ```
 
----
-
-## 🔄 Database Migrations
-
+## 🧪 Testing
 ```bash
-alembic upgrade head
+pytest tests/ -v
 ```
 
----
+## 📁 Project Structure
 
-## 🧪 API Documentation
+app/
+├── core/          # Centralized config, security, cache
+├── models/        # Database models
+├── routes/        # API endpoints
+├── services/      # Business logic
+├── websocket/     # WebSocket manager
+└── ai/            # AI prompts and service
+services/
+├── auth-service/        # Standalone auth microservice
+├── ai-service/          # Standalone AI microservice
+├── notification-service/ # Standalone notification microservice
+└── api-gateway/         # API gateway
 
-Once running:
+## 👤 Author
 
-* Swagger UI: http://localhost:8000/docs
-* ReDoc: http://localhost:8000/redoc
+**Eng. Sadat Hasakya**
+- GitHub: [@Eng-SadatHasakya](https://github.com/Eng-SadatHasakya)
+- Email: hersacemusasadat@gmail.com
 
----
+## 📄 License
 
-## 🔑 Example Authentication Flow
-
-1. Register/Login
-2. Receive access + refresh token
-3. Use access token for API calls
-4. Refresh when expired
-
----
-
-## 🚀 Deployment
-
-Recommended platforms:
-
-* AWS (EC2 / ECS)
-* Render
-* DigitalOcean
-* Railway
-
----
-
-## 📈 Future Improvements
-
-* Payment integration (Stripe)
-* Rate limiting
-* Webhooks
-* Microservices architecture
-
----
-
-## 🧑‍💻 Author
-
-Built by Eng Sadat Hasakya
+MIT
