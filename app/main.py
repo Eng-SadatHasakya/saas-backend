@@ -11,7 +11,7 @@ from app.core.database import engine, Base
 from app.routes import (
     auth, users, organizations,
     subscriptions, invitations,
-    api_keys, ai, websocket, notifications, platform, billing
+    api_keys, ai, websocket, notifications, platform, billing, admin
 )
 
 # ✅ Setup logging
@@ -66,6 +66,7 @@ app.include_router(notifications.router)
 app.include_router(websocket.router)
 app.include_router(platform.router)
 app.include_router(billing.router)
+app.include_router(admin.router)
 
 # ✅ Health check
 @app.get("/", tags=["Health"])
